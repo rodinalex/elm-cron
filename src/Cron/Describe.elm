@@ -1,12 +1,9 @@
-module Describe exposing (describeSchedule)
+module Cron.Describe exposing (describeSchedule)
 
-{-|
-
-@docs describeSchedule
-
+{-| @docs describeSchedule
 -}
 
-import Types exposing (..)
+import Cron.Types exposing (..)
 
 
 {-| A function that puts a `Maybe` parsed `CronSchedule` into a more-or-less readable format.

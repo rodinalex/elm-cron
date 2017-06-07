@@ -1,4 +1,4 @@
-module Types
+module Cron.Types
     exposing
         ( BaseField(..)
         , CronField(..)
