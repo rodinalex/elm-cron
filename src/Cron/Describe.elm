@@ -33,15 +33,15 @@ scheduleDescription cS =
         dCS =
             describeSchedule cS
     in
-    dCS.minuteDescription
-        ++ "; "
-        ++ dCS.hourDescription
-        ++ "; "
-        ++ dCS.dayDescription
-        ++ "; "
-        ++ dCS.monthDescription
-        ++ "; "
-        ++ dCS.dayOfWeekDescription
+        dCS.minuteDescription
+            ++ "; "
+            ++ dCS.hourDescription
+            ++ "; "
+            ++ dCS.dayDescription
+            ++ "; "
+            ++ dCS.monthDescription
+            ++ "; "
+            ++ dCS.dayOfWeekDescription
 
 
 {-| A function to describe an individual `CronField`
