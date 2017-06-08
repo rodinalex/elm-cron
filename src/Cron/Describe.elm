@@ -4,7 +4,7 @@ module Cron.Describe
         , scheduleDescription
         )
 
-{-|
+{-| This module contains the functions to describe the `CronSchedule`
 
 @docs describeSchedule, scheduleDescription
 
@@ -44,6 +44,8 @@ scheduleDescription cS =
         ++ dCS.dayOfWeekDescription
 
 
+{-| A function to describe an individual `CronField`
+-}
 describeCronField : String -> CronField -> String
 describeCronField str (CronField bF mStep) =
     case mStep of
