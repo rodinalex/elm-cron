@@ -1,9 +1,9 @@
 module Example exposing (..)
 
-import Test exposing (..)
-import Expect
 import Cron.Decoder exposing (decodeCronTab)
 import Cron.Types exposing (..)
+import Expect
+import Test exposing (..)
 
 
 decoderTests : Test
