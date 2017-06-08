@@ -50,7 +50,7 @@ type CronSchedule
     = CronSchedule (List CronField) (List CronField) (List CronField) (List CronField) (List CronField)
 
 
-{-| Stuff
+{-| A record containing readable descriptions for the Crontab fields.
 -}
 type alias DescribedCronSchedule =
     { minuteDescription : String

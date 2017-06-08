@@ -1,27 +1,43 @@
-module Cron.Describe exposing (describeSchedule)
+module Cron.Describe exposing (describeSchedule, scheduleDescription)
 
-{-| @docs describeSchedule
+{-|
+
+@docs describeSchedule, scheduleDescription
+
 -}
 
 import Cron.Types exposing (..)
 
 
-{-| A function that puts a `Maybe` parsed `CronSchedule` into a more-or-less readable format.
+{-| A function that puts a `CronSchedule` into a more-or-less readable format.
 -}
-describeSchedule : Maybe CronSchedule -> Maybe DescribedCronSchedule
-describeSchedule sch =
-    case sch of
-        Nothing ->
-            Nothing
+describeSchedule : CronSchedule -> DescribedCronSchedule
+describeSchedule (CronSchedule a b c d e) =
+    { minuteDescription = String.join " and " <| List.map (describeCronField "minute") a
+    , hourDescription = String.join " and " <| List.map (describeCronField "hour") b
+    , dayDescription = String.join " and " <| List.map (describeCronField "day") c
+    , monthDescription = String.join " and " <| List.map (describeCronField "month") d
+    , dayOfWeekDescription = String.join " and " <| List.map (describeCronField "day of the week") e
+    }
 
-        Just (CronSchedule a b c d e) ->
-            Just
-                { minuteDescription = String.join " and " <| List.map (describeCronField "minute") a
-                , hourDescription = String.join " and " <| List.map (describeCronField "hour") b
-                , dayDescription = String.join " and " <| List.map (describeCronField "day") c
-                , monthDescription = String.join " and " <| List.map (describeCronField "month") d
-                , dayOfWeekDescription = String.join " and " <| List.map (describeCronField "day of the week") e
-                }
+
+{-| A function to turn the `CronSchedule` into a string
+-}
+scheduleDescription : CronSchedule -> String
+scheduleDescription cS =
+    let
+        dCS =
+            describeSchedule cS
+    in
+    dCS.minuteDescription
+        ++ "; "
+        ++ dCS.hourDescription
+        ++ "; "
+        ++ dCS.dayDescription
+        ++ "; "
+        ++ dCS.monthDescription
+        ++ "; "
+        ++ dCS.dayOfWeekDescription
 
 
 describeCronField : String -> CronField -> String
