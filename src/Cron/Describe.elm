@@ -1,4 +1,8 @@
-module Cron.Describe exposing (describeSchedule, scheduleDescription)
+module Cron.Describe
+    exposing
+        ( describeSchedule
+        , scheduleDescription
+        )
 
 {-|
 

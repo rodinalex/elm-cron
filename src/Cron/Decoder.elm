@@ -1,4 +1,7 @@
-module Cron.Decoder exposing (decodeCronTab)
+module Cron.Decoder
+    exposing
+        ( decodeCronTab
+        )
 
 {-|
 
