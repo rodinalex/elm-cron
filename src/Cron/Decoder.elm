@@ -1,14 +1,11 @@
-module Decoder exposing (decodeCronTab)
+module Cron.Decoder exposing (decodeCronTab)
 
-{-|
-
-@docs decodeCronTab
-
+{-| @docs decodeCronTab
 -}
 
 import Combine as C
-import Parsers exposing (..)
-import Types exposing (..)
+import Cron.Parsers exposing (..)
+import Cron.Types exposing (..)
 
 
 {-| Function to decode the standard CronTab.
@@ -19,17 +16,17 @@ decodeCronTab str =
         splitStr =
             String.split " " (String.toUpper str)
     in
-    case splitStr of
-        [ a, b, c, d, e ] ->
-            Maybe.map5 CronSchedule
-                (decodeMinuteCronField a)
-                (decodeHourCronField b)
-                (decodeDayCronField c)
-                (decodeMonthCronField d)
-                (decodeDayOfWeekCronField e)
+        case splitStr of
+            [ a, b, c, d, e ] ->
+                Maybe.map5 CronSchedule
+                    (decodeMinuteCronField a)
+                    (decodeHourCronField b)
+                    (decodeDayCronField c)
+                    (decodeMonthCronField d)
+                    (decodeDayOfWeekCronField e)
 
-        _ ->
-            Nothing
+            _ ->
+                Nothing
 
 
 {-| Decoder for the Minute CronTab entry.
@@ -145,12 +142,12 @@ checkValidity mn mx (CronField bF mStep) =
                 Just l ->
                     l > 0
     in
-    case bF of
-        Star ->
-            validStep mStep
+        case bF of
+            Star ->
+                validStep mStep
 
-        SpecificField n ->
-            (n <= mx) && (n >= mn) && validStep mStep
+            SpecificField n ->
+                (n <= mx) && (n >= mn) && validStep mStep
 
-        RangeField m n ->
-            (n <= mx) && (n >= mn) && (m < n) && validStep mStep
+            RangeField m n ->
+                (n <= mx) && (n >= mn) && (m < n) && validStep mStep

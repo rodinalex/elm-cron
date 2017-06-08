@@ -1,4 +1,4 @@
-module Parsers
+module Cron.Parsers
     exposing
         ( cronFieldParser
         , dayOfWeekBaseFieldParser
@@ -8,7 +8,7 @@ module Parsers
 
 import Combine as C exposing ((*>), (<$), (<$>), (<*), (<*>), (<|>), end)
 import Combine.Num as CN
-import Types exposing (..)
+import Cron.Types exposing (..)
 
 
 {-| A parser for converting the alternative cron notation for months into integers: `JAN` -> `1`, `FEB` -> `2`, etc.
