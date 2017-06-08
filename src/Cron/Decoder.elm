@@ -1,9 +1,10 @@
-module Cron.Decoder exposing (decodeCronTab)
+module Cron.Decoder
+    exposing
+        ( decodeCronTab
+        )
 
-{-|
-
+{-| This module contains the function to turn a Crontab `String` into `CronSchedule`
 @docs decodeCronTab
-
 -}
 
 import Combine as C
@@ -12,6 +13,30 @@ import Cron.Types exposing (..)
 
 
 {-| Function to decode the standard CronTab.
+
+        decodeCronTab "* * * * *" =
+        Just (
+        CronSchedule
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+        )
+
+        decodeCronTab "12-27/3 * * JAN MON-FRI" =
+        Just (
+        CronSchedule
+          ([CronField (RangeField 12 27) (Just 3)])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField (SpecificField 1) Nothing])
+          ([CronField (RangeField 1 5) Nothing])
+        )
+
+        decodeCronTab "12-27/3 * JAN MON-FRI *" =
+        Nothing -- Invalid syntax
+
 -}
 decodeCronTab : String -> Maybe CronSchedule
 decodeCronTab str =
@@ -19,17 +44,17 @@ decodeCronTab str =
         splitStr =
             String.split " " (String.toUpper str)
     in
-    case splitStr of
-        [ a, b, c, d, e ] ->
-            Maybe.map5 CronSchedule
-                (decodeMinuteCronField a)
-                (decodeHourCronField b)
-                (decodeDayCronField c)
-                (decodeMonthCronField d)
-                (decodeDayOfWeekCronField e)
+        case splitStr of
+            [ a, b, c, d, e ] ->
+                Maybe.map5 CronSchedule
+                    (decodeMinuteCronField a)
+                    (decodeHourCronField b)
+                    (decodeDayCronField c)
+                    (decodeMonthCronField d)
+                    (decodeDayOfWeekCronField e)
 
-        _ ->
-            Nothing
+            _ ->
+                Nothing
 
 
 {-| Decoder for the Minute CronTab entry.
@@ -145,12 +170,12 @@ checkValidity mn mx (CronField bF mStep) =
                 Just l ->
                     l > 0
     in
-    case bF of
-        Star ->
-            validStep mStep
+        case bF of
+            Star ->
+                validStep mStep
 
-        SpecificField n ->
-            (n <= mx) && (n >= mn) && validStep mStep
+            SpecificField n ->
+                (n <= mx) && (n >= mn) && validStep mStep
 
-        RangeField m n ->
-            (n <= mx) && (n >= mn) && (m < n) && validStep mStep
+            RangeField m n ->
+                (n <= mx) && (n >= mn) && (m < n) && validStep mStep
