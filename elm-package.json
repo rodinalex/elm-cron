@@ -4,13 +4,12 @@
     "repository": "https://github.com/rodinalex/elm-cron.git",
     "license": "BSD3",
     "source-directories": [
-        "src",
-        "src/Cron"
+        "src"
     ],
     "exposed-modules": [
-        "Types",
-        "Decoder",
-        "Describe"
+        "Cron.Types",
+        "Cron.Decoder",
+        "Cron.Describe"
     ],
     "dependencies": {
         "Bogdanp/elm-combine": "3.1.1 <= v < 4.0.0",

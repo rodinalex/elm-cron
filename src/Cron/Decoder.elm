@@ -3,7 +3,8 @@ module Cron.Decoder
         ( decodeCronTab
         )
 
-{-| @docs decodeCronTab
+{-| This module contains the function to turn a Crontab `String` into `CronSchedule`
+@docs decodeCronTab
 -}
 
 import Combine as C
@@ -12,6 +13,30 @@ import Cron.Types exposing (..)
 
 
 {-| Function to decode the standard CronTab.
+
+        decodeCronTab "* * * * *" =
+        Just (
+        CronSchedule
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+        )
+
+        decodeCronTab "12-27/3 * * JAN MON-FRI" =
+        Just (
+        CronSchedule
+          ([CronField (RangeField 12 27) (Just 3)])
+          ([CronField Star Nothing])
+          ([CronField Star Nothing])
+          ([CronField (SpecificField 1) Nothing])
+          ([CronField (RangeField 1 5) Nothing])
+        )
+
+        decodeCronTab "12-27/3 * JAN MON-FRI *" =
+        Nothing -- Invalid syntax
+
 -}
 decodeCronTab : String -> Maybe CronSchedule
 decodeCronTab str =
