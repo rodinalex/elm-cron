@@ -47,6 +47,7 @@ decoderTests =
             CronSchedule starField starField starField starField (starField_ 1)
         , assertNoParse "* * * * * *"
         , assertNoParse "* * * *"
+        , assertNoParse "* * * * "
         , assertNoParse "*/1/1 * * * *"
         , assertNoParse "1-2-3 * * * *"
         , assertNoParse "1,,2 * * * *"

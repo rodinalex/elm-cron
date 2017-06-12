@@ -61,100 +61,115 @@ decodeCronTab str =
 -}
 decodeMinuteCronField : String -> Maybe (List CronField)
 decodeMinuteCronField str =
-    case C.parse (cronFieldParser simpleBaseFieldParser) str of
-        Ok ( _, stream, result ) ->
-            case stream.input of
-                "" ->
-                    if List.member False <| List.map (checkValidity 0 59) result then
+    if str == "" then
+        Nothing
+    else
+        case C.parse (cronFieldParser simpleBaseFieldParser) str of
+            Ok ( _, stream, result ) ->
+                case stream.input of
+                    "" ->
+                        if List.member False <| List.map (checkValidity 0 59) result then
+                            Nothing
+                        else
+                            Just result
+
+                    _ ->
                         Nothing
-                    else
-                        Just result
 
-                _ ->
-                    Nothing
-
-        Err _ ->
-            Nothing
+            Err _ ->
+                Nothing
 
 
 {-| Decoder for the Hour CronTab entry.
 -}
 decodeHourCronField : String -> Maybe (List CronField)
 decodeHourCronField str =
-    case C.parse (cronFieldParser simpleBaseFieldParser) str of
-        Ok ( _, stream, result ) ->
-            case stream.input of
-                "" ->
-                    if List.member False <| List.map (checkValidity 0 23) result then
+    if str == "" then
+        Nothing
+    else
+        case C.parse (cronFieldParser simpleBaseFieldParser) str of
+            Ok ( _, stream, result ) ->
+                case stream.input of
+                    "" ->
+                        if List.member False <| List.map (checkValidity 0 23) result then
+                            Nothing
+                        else
+                            Just result
+
+                    _ ->
                         Nothing
-                    else
-                        Just result
 
-                _ ->
-                    Nothing
-
-        Err _ ->
-            Nothing
+            Err _ ->
+                Nothing
 
 
 {-| Decoder for the Day CronTab entry.
 -}
 decodeDayCronField : String -> Maybe (List CronField)
 decodeDayCronField str =
-    case C.parse (cronFieldParser simpleBaseFieldParser) str of
-        Ok ( _, stream, result ) ->
-            case stream.input of
-                "" ->
-                    if List.member False <| List.map (checkValidity 1 31) result then
+    if str == "" then
+        Nothing
+    else
+        case C.parse (cronFieldParser simpleBaseFieldParser) str of
+            Ok ( _, stream, result ) ->
+                case stream.input of
+                    "" ->
+                        if List.member False <| List.map (checkValidity 1 31) result then
+                            Nothing
+                        else
+                            Just result
+
+                    _ ->
                         Nothing
-                    else
-                        Just result
 
-                _ ->
-                    Nothing
-
-        Err _ ->
-            Nothing
+            Err _ ->
+                Nothing
 
 
 {-| Decoder for the Month CronTab entry.
 -}
 decodeMonthCronField : String -> Maybe (List CronField)
 decodeMonthCronField str =
-    case C.parse (cronFieldParser monthBaseFieldParser) str of
-        Ok ( _, stream, result ) ->
-            case stream.input of
-                "" ->
-                    if List.member False <| List.map (checkValidity 1 12) result then
+    if str == "" then
+        Nothing
+    else
+        case C.parse (cronFieldParser monthBaseFieldParser) str of
+            Ok ( _, stream, result ) ->
+                case stream.input of
+                    "" ->
+                        if List.member False <| List.map (checkValidity 1 12) result then
+                            Nothing
+                        else
+                            Just result
+
+                    _ ->
                         Nothing
-                    else
-                        Just result
 
-                _ ->
-                    Nothing
-
-        Err _ ->
-            Nothing
+            Err _ ->
+                Nothing
 
 
 {-| Decoder for the Day-of-Week CronTab entry.
 -}
 decodeDayOfWeekCronField : String -> Maybe (List CronField)
 decodeDayOfWeekCronField str =
-    case C.parse (cronFieldParser dayOfWeekBaseFieldParser) str of
-        Ok ( _, stream, result ) ->
-            case stream.input of
-                "" ->
-                    if List.member False <| List.map (checkValidity 0 6) result then
+    if str == "" then
+        Nothing
+    else
+        case C.parse (cronFieldParser dayOfWeekBaseFieldParser) str of
+            Ok ( _, stream, result ) ->
+                case stream.input of
+                    "" ->
+                        if List.member False <| List.map (checkValidity 0 6) result then
+                            Nothing
+                        else
+                            Just result
+
+                    _ ->
                         Nothing
-                    else
-                        Just result
 
-                _ ->
-                    Nothing
-
-        Err _ ->
-            Nothing
+            Err _ ->
+                Nothing
 
 
 {-| Function to check whether the numerical values of a given field are valid.
