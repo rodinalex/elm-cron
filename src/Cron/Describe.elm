@@ -46,21 +46,16 @@ describeSchedule (CronSchedule a b c d e) =
     }
 
 
-{-| A function to turn the `CronSchedule` into a string
-
 {-| A function that puts a `CronSchedule` into a more-or-less readable format.
 
         Maybe.map scheduleDescription <| decodeCronTab "* * * * *" =
         Just "every minute; every hour; every day; every month; every day of the week"
-     }
 
         Maybe.map scheduleDescription <| decodeCronTab "12-27/3 * * JAN MON-FRI" =
         Just "every 3 minute between 12 and 27; every hour; every day; at month 1; every day of the week between 1 and 5"
 
         Maybe.map scheduleDescription <| decodeCronTab "12-27/3 * JAN MON-FRI *" =
         Nothing -- Invalid syntax
-
--}
 
 -}
 scheduleDescription : CronSchedule -> String

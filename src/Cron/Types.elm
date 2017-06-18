@@ -32,7 +32,7 @@ will be rendered as
     sF : CronField
 
     sf =
-        CronField (BaseField Star) (Just 12)
+        CronField Star (Just 12)
 
 -}
 type CronField

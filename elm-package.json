@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.2",
     "summary": "Cron parser for Elm",
     "repository": "https://github.com/rodinalex/elm-cron.git",
     "license": "BSD3",
