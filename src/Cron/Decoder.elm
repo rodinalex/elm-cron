@@ -1,10 +1,11 @@
 module Cron.Decoder
     exposing
         ( decodeCronTab
+        , getExplicitSchedule
         )
 
 {-| This module contains the function to turn a Crontab `String` into `CronSchedule`
-@docs decodeCronTab
+@docs decodeCronTab, getExplicitSchedule
 -}
 
 import Combine as C
@@ -183,14 +184,106 @@ checkValidity mn mx (CronField bF mStep) =
                     True
 
                 Just l ->
-                    l > 0
+                    l > 0 && l <= mx
     in
         case bF of
             Star ->
                 validStep mStep
 
             SpecificField n ->
-                (n <= mx) && (n >= mn) && validStep mStep
+                (n <= mx) && (n >= mn) && (mStep == Nothing)
 
             RangeField m n ->
                 (n <= mx) && (n >= mn) && (m < n) && validStep mStep
+
+
+{-| This function obtains the `ExplicitSchedule` from a CronTab
+-}
+getExplicitSchedule : String -> Maybe ExplicitSchedule
+getExplicitSchedule cronTab =
+    let
+        mCronSchedule =
+            decodeCronTab cronTab
+    in
+        case mCronSchedule of
+            Nothing ->
+                Nothing
+
+            Just sch ->
+                Just
+                    { minutes = allowedMinutes sch
+                    , hours = allowedHours sch
+                    , days = allowedDays sch
+                    , months = allowedMonths sch
+                    , daysOfWeek = allowedDaysOfWeek sch
+                    }
+
+
+{-| Explicit values for minutes
+-}
+allowedMinutes : CronSchedule -> List Int
+allowedMinutes (CronSchedule x _ _ _ _) =
+    allowedValues x 0 59
+
+
+{-| Explicit values for hours
+-}
+allowedHours : CronSchedule -> List Int
+allowedHours (CronSchedule _ x _ _ _) =
+    allowedValues x 0 23
+
+
+{-| Explicit values for days
+-}
+allowedDays : CronSchedule -> List Int
+allowedDays (CronSchedule _ _ x _ _) =
+    allowedValues x 1 31
+
+
+{-| Explicit values for months
+-}
+allowedMonths : CronSchedule -> List Int
+allowedMonths (CronSchedule _ _ _ x _) =
+    allowedValues x 1 12
+
+
+{-| Explicit values for days-of-week
+-}
+allowedDaysOfWeek : CronSchedule -> List Int
+allowedDaysOfWeek (CronSchedule _ _ _ _ x) =
+    allowedValues x 0 6
+
+
+{-| Function for obtaining the allowed values give the list of `CronField`s, as well as the minimum and maximum values
+-}
+allowedValues : List CronField -> Int -> Int -> List Int
+allowedValues lst mn mx =
+    List.concat (List.map (allowedValuesAux mn mx) lst)
+
+
+allowedValuesAux : Int -> Int -> CronField -> List Int
+allowedValuesAux mn mx (CronField numF mStep) =
+    case numF of
+        Star ->
+            case mStep of
+                Nothing ->
+                    List.range mn mx
+
+                Just stp ->
+                    stepRange mn mx stp
+
+        SpecificField n ->
+            [ n ]
+
+        RangeField m n ->
+            case mStep of
+                Nothing ->
+                    List.range m n
+
+                Just stp ->
+                    stepRange mn mx stp
+
+
+stepRange : Int -> Int -> Int -> List Int
+stepRange mn mx stp =
+    List.filter (\x -> x <= mx) (List.map (\x -> mn + x * stp) (List.range 0 mx))

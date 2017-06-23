@@ -4,11 +4,12 @@ module Cron.Types
         , CronField(..)
         , CronSchedule(..)
         , DescribedCronSchedule
+        , ExplicitSchedule
         )
 
 {-| This module contains the types used in parsing cron expressions.
 
-@docs BaseField, CronField, CronSchedule, DescribedCronSchedule
+@docs BaseField, CronField, CronSchedule, DescribedCronSchedule, ExplicitSchedule
 
 -}
 
@@ -58,4 +59,15 @@ type alias DescribedCronSchedule =
     , dayDescription : String
     , monthDescription : String
     , dayOfWeekDescription : String
+    }
+
+
+{-| `ExplicitSchedule` lists the allowed values that each field will take according to the provided CronTab
+-}
+type alias ExplicitSchedule =
+    { minutes : List Int
+    , hours : List Int
+    , days : List Int
+    , months : List Int
+    , daysOfWeek : List Int
     }
